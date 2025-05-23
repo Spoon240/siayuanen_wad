@@ -1,4 +1,4 @@
-# Assignment 1 – Not Shopify
+# Assignment 1 – Ecommerce Store
 
 This Node.js module simulates a basic e-commerce backend system where users can register, log in, browse products, and complete purchases. Admins can manage product inventory, coupons, and analyze sales performance.
 
