@@ -186,6 +186,9 @@ module.exports = {
     //..............
 
     //1. Registers a new customer account.
+    // Only allowed if no one is currently logged in.
+    // Validates that username and password are non-empty strings. Prevents duplicate usernames.
+    // On success, adds the user to the system with a "customer" role 
     registerAccount(username, password) {
         // Prevent registration if someone is already logged in
         if (!this.checkLoggedIn()) {
@@ -224,6 +227,8 @@ module.exports = {
     },
 
     //2. Logs in an existing user using username and password.
+    // Only works if no one is currently logged in.
+    // Sets the current session if credentials are correct.
     loginAccount(username, password) {
         // Prevent login if someone is already logged in
         if (!this.checkLoggedIn()) {
@@ -278,6 +283,8 @@ module.exports = {
     },
 
     //5. Searches products by name or category.
+    // Sanitizes and matches keyword input against product fields.
+    //Displays results or informs if no matches are found.
     searchProductsByNameorCategory(keyword) {
         // Validate input
         if (typeof keyword !== "string" || keyword.trim() == "") {
@@ -317,6 +324,8 @@ module.exports = {
     //..............
 
     //6. Adds a new product to the catalog (admin-only).
+    // Validates input types, values, and required fields.
+    // Adds product with unique ID and initializes sales count.
     addProduct(name, price, stock, category) {
         // Ensure only admins can perform this action
         if (!this.checkAdmin()) {
@@ -359,6 +368,8 @@ module.exports = {
     },
 
     //7. Edits product details (admin-only).
+    // Updating name, price, stock, or category with validation.
+    // Skips edit if product not found or input is invalid.
     editProduct(productId, type, data) {
         // Only admins can edit products
         if (!this.checkAdmin()) {
@@ -420,6 +431,7 @@ module.exports = {
     },
 
     //8. Deletes a product from the catalog by its ID (admin-only).
+    // Validates ID and removes the product if found.
     deleteProduct(productId) {
         // Ensure only admins can perform this action
         if (!this.checkAdmin()) {
@@ -489,6 +501,7 @@ module.exports = {
     },
 
     //10. Displays all available coupon codes (admin-only).
+    //Validate input, ensures code is unique, and appends to the coupons list.
     viewAllCoupons() {
         // Ensure only admins can access coupon details
         if (!this.checkAdmin()) {
@@ -513,6 +526,7 @@ module.exports = {
     },
 
     //11. Shows top-selling products and sales by category (admin-only).
+    // Sorts by salesCount and lists the top N products.
     getSalesPerformanceProductSummary(limit = 5) {
         if (!this.checkAdmin()) {
             return;
@@ -537,6 +551,7 @@ module.exports = {
     },
 
     //12. Generates a report of sales between two dates (admin-only).
+    // Validates input, filters sales logs by date range, and summarizes orders and revenue.
     getSalesRecordsByDateRange(start, end) {
         // Ensure only admins can access
         if (!this.checkAdmin()) {
@@ -601,6 +616,8 @@ module.exports = {
     },
 
     //13. Analyzes stock levels and sales data to flag risky products (admin-only).
+    // Uses a sales-to-stock ratio to highlight products at risk of selling out.
+    // This can help admins prioritize restocking decisions.
     getInventoryRiskReport() {
         if (!this.checkAdmin()) {
             return;
@@ -640,6 +657,7 @@ module.exports = {
     //..............
 
     //14. Adds a product to the logged-in customer's cart or updates it when product already exist in the cart
+    // Prevents over-adding beyond stock and updates quantity if product exists.
     addToCart(productId, quantity) {
         // Ensure the user is a logged-in customer
         if (!this.currentUser || this.currentUser.role !== "customer") {
@@ -733,6 +751,8 @@ module.exports = {
     },
 
     //16. Processes the checkout for the logged-in customer.
+    // Finalizes purchase by applying optional coupon and updating stock and sales logs
+    //validates login, cart contents, and coupon eligibility
     checkout(couponCode = "") {
         // Check if user is logged in and is customer
         if (!this.currentUser || this.currentUser.role !== "customer") {
@@ -825,6 +845,8 @@ module.exports = {
     },
 
     //17. Removes a specified quantity of a product from the customer's cart.
+    // Removes a specified quantity of an item from the customer's cart
+    // if quantity exceeds or matches current amount, the item is fully removed
     removeQuantityFromCart(productId, quantityToRemove) {
         // Check if user is logged in and is customer
         if (!this.currentUser || this.currentUser.role !== "customer") {
@@ -890,6 +912,7 @@ module.exports = {
             return;
         }
 
+        // Show the valid coupons availble
         console.log("Based on your cart, you can use the following coupon(s):");
         for (let i = 0; i < validCoupons.length; i++) {
             const cpn = validCoupons[i];
@@ -898,4 +921,4 @@ module.exports = {
 
     }
 
-}
+};
