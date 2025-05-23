@@ -141,8 +141,8 @@ An array of sales records, each includes:
 &nbsp;&nbsp;&nbsp;`getSalesPerformanceProductSummary(limit = 5)`
 - Displays the top-selling products based on units sold, limited to the top N results.
 
-&nbsp;&nbsp;&nbsp;`getSalesRecordsByDateRange(start, end)`
-- Generates a sales report within a specified date range, showing each order the total orders and revenue.
+&nbsp;&nbsp;&nbsp;`getSalesRecordsByDateRange(start, end)` 
+- Generates a sales report within a specified date range, showing each order the total orders and revenue. Please Use `"2024-05-01"` to `"2024-05-05"` as a sample range to see meaningful data from the preloaded `salesLog`. Alternatively, you can create your own sales records by using the `checkout()` function before running this report.
 
 &nbsp;&nbsp;&nbsp;`getInventoryRiskReport()`
 - Analyzes product sales-to-stock ratios to determine risk levels. Outputs a risk score and classification for each product indicating how likely it is to run out.
